@@ -15,22 +15,33 @@ class MovieList extends React.Component{
             this.setState({data : res.data})
         })
         .catch((err) => {
-            console.log(err)
+            alert('masuk')
         })
 
     }
 
+    renderMovieJsx = () => {
+        var jsx = this.state.data.map((val) => {
+            return(
+                <div className='col-md-3 m-2 mycard' >
+                    <img src={val.image} alt="movie" width='100%' />
+                    <div className='title ml-3 mt-2'>{val.title} </div>
+                    <div className='lang ml-3 mt-2'> {val.sutradara}</div>
+                    <div className='genre ml-3 mb-3 mt-2'> {val.genre} </div>
+                </div>
+            )
+        })
+
+        return jsx
+    }
+
     render(){
+        console.log(this.state.data)
         return(
             <div className='container mt-5'>   
-                <div className='row'>
+                <div className='row justify-content-center'>
 
-                <div className='col-md-3 m-2 mycard' >
-                    <img src="https://media.21cineplex.com/webcontent/gallery/pictures/156074568118284_452x647.jpg" alt="movie" width='100%' />
-                    <div className='title ml-3 mt-2'>Ini Title </div>
-                    <div className='lang ml-3 mt-2'> Sutradara</div>
-                    <div className='genre ml-3 mb-3 mt-2'> Genre </div>
-                </div>
+                {this.renderMovieJsx()}
 
                 
 
