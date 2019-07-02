@@ -37,10 +37,44 @@ body{
 }
 
 .mycard{
-  background-color: white;
-  padding: 0px
+  max-width: 230px;
+ background-color: white;
+ padding: 0px
 }
 
 .mycard img{
-  border-bottom: 2px solid #4ec697
+ height: 299px;
+ width: 230px;
+ border-bottom: 2px solid #4ec697;
 }
+
+.title{
+ font-size: 16px;
+ color: #333333;
+ font-weight: bold;
+ height:  40px;
+ cursor: pointer;
+
+}
+.title:hover{
+ text-decoration: underline;
+}
+
+.lang{
+ color: #666666;
+ font-weight: bold;
+ font-size: 12px
+}
+
+.genre{
+ display: inline-block;
+ border: 1px solid #DFDFDF;
+ background-color: #f4f4f4;
+ color: #999999;
+ font-size: 9px;
+ padding: 3px;
+ border-radius: 10px;
+}
+
+
+

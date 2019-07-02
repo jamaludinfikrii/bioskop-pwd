@@ -25,10 +25,14 @@ class MovieList extends React.Component{
             <div className='container mt-5'>   
                 <div className='row'>
 
-                    <div className='col-md-3 mycard' >
-                        <img src="https://media.21cineplex.com/webcontent/gallery/pictures/156074568118284_452x647.jpg" alt="movie image" width='100%' />
-                        <p>Ini Title</p>
-                    </div>
+                <div className='col-md-3 m-2 mycard' >
+                    <img src="https://media.21cineplex.com/webcontent/gallery/pictures/156074568118284_452x647.jpg" alt="movie" width='100%' />
+                    <div className='title ml-3 mt-2'>Ini Title </div>
+                    <div className='lang ml-3 mt-2'> Sutradara</div>
+                    <div className='genre ml-3 mb-3 mt-2'> Genre </div>
+                </div>
+
+                
 
                 </div>
             </div>
