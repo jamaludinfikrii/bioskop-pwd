@@ -1,7 +1,7 @@
 import React from 'react'
-import {Table , TableBody,TableRow,TableCell,TableFooter,TableHead,Paper,Container, Tab} from '@material-ui/core'
+import {Table , TableBody,TableRow,TableCell,TableHead,Paper,Container} from '@material-ui/core'
 import { DeleteForeverRounded , EditAttributesRounded } from '@material-ui/icons'
-import { Modal , ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
+import { Modal , ModalBody, ModalHeader, ModalFooter,FormGroup,Label,Input  } from 'reactstrap'
 import Axios from 'axios';
 
 
@@ -59,6 +59,48 @@ class ManageMovie extends React.Component{
     openModal = () => {
         this.setState({modalOpen : true})
     }
+
+    onBtnSaveClick = () => {
+        var playingAt = []
+
+        if(this.refs.radio1.refs.radio1Inner.checked === true){
+            playingAt.push(9)
+        }
+        if(this.refs.radio2.refs.radio2Inner.checked === true){
+            playingAt.push(14)
+        }
+        if(this.refs.radio3.refs.radio3Inner.checked === true){
+            playingAt.push(16)
+        }
+        if(this.refs.radio4.refs.radio4Inner.checked === true){
+            playingAt.push(20)
+        }
+        if(this.refs.radio5.refs.radio5Inner.checked === true){
+            playingAt.push(22)
+        }
+        console.log(playingAt)
+
+
+        // var title = this.refs.title.value
+        // var sutradara = this.refs.sutradara.value
+        // var genre = this.refs.genre.value
+        // var imageLink = this.refs.imageLink.value
+        // var playingAt = this.refs.playingAt.value
+        // var duration = this.refs.duration.value
+        // var sinopsis = this.refs.sinopsis.value
+
+        // var data = {
+        //     title : title,
+        //     genre : genre,
+        //     sinopsis : sinopsis,
+        //     playingAt : playingAt.toString().split(' ')
+        // }
+
+        // Axios.post('http://localhost:2000/movies' , )
+        // Ambil Data Dari Input
+
+        // Kirim Ke API
+    }
     //render
     render(){
         return(
@@ -67,19 +109,53 @@ class ManageMovie extends React.Component{
                 <input type='button' className='btn btn-success mb-3' value='Add Data' onClick={this.openModal} /> 
                 {/* MODAL START */}
 
-                    <Modal isOpen={this.state.modalOpen}>
+                    <Modal isOpen={this.state.modalOpen} toggle={this.closeModal}>
                         <ModalHeader>
                             Add Movie
                         </ModalHeader>
                         <ModalBody>
-                            <input type='text' className='form-control' placeholder='Title' />
-                            <input type='text' className='form-control' placeholder='Sutradara' />
-                            <input type='text' className='form-control' placeholder='Genre' />
-                            <input type='text' className='form-control' placeholder='Image' />
+                            <input ref='title' type='text' className='form-control mt-2' placeholder='Title' />
+                            <input ref='sutradara' type='text' className='form-control mt-2' placeholder='Sutradara' />
+                            <input ref='genre' type='text' className='form-control mt-2' placeholder='Genre' />
+                            <input ref='imageLink' type='text' className='form-control mt-2' placeholder='Image' />
+                            <div className='mt-3'>
+                                <FormGroup check inline>
+                                    <Label>
+                                        Playing At : 
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check inline>
+                                    <Label check>
+                                        <Input ref='radio1' innerRef='radio1Inner' type='radio' /> 09.00
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check inline>
+                                    <Label check>
+                                        <Input ref='radio2' innerRef='radio2Inner' type='radio' /> 14.00
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check inline>
+                                    <Label check>
+                                        <Input ref='radio3' innerRef='radio3Inner' type='radio' /> 16.00
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check inline>
+                                    <Label check>
+                                        <Input ref='radio4' innerRef='radio4Inner' type='radio' /> 20.00
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check inline>
+                                    <Label check>
+                                        <Input ref='radio5' innerRef='radio5Inner' type='radio' /> 22.00
+                                    </Label>
+                                </FormGroup>
+                            </div>
+                            <input ref='duration' type='number' className='form-control mt-2' placeholder='Duration' />
+                            <textarea ref='sinopsis' placeholder='sinopsis' className='form-control mt-2' />
                         </ModalBody>
                         <ModalFooter>
                             <input type='button' onClick={this.closeModal} value='cancel' className='btn btn-danger' />
-                            <input type='button' value='Save' className='btn btn-success' />
+                            <input type='button' value='Save' onClick={this.onBtnSaveClick} className='btn btn-success' />
                         </ModalFooter>
                     </Modal>
 
