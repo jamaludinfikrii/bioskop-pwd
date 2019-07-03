@@ -78,28 +78,42 @@ class ManageMovie extends React.Component{
         if(this.refs.radio5.refs.radio5Inner.checked === true){
             playingAt.push(22)
         }
-        console.log(playingAt)
+       
+        var title = this.refs.title.value
+        var sutradara = this.refs.sutradara.value
+        var genre = this.refs.genre.value
+        var imageLink = this.refs.imageLink.value
+        var duration = this.refs.duration.value
+        var sinopsis = this.refs.sinopsis.value
 
+        var data = {
+            title : title,
+            genre : genre,
+            sinopsis : sinopsis,
+            playingAt,
+            duration,
+            sutradara,
+            image : imageLink
+        }
+        if(title !== '' &&
+           sutradara !== '' &&
+           playingAt.length > 0 &&
+           genre !== '' && 
+           imageLink !== '' && 
+           duration > 0 && 
+           sinopsis !== '' ){
+               Axios.post('http://localhost:2000/movies' , data )
+               .then((res) => {
+                   console.log(res.data)
+               })
+               .catch((err) => {
+                   console.log(err)
+               })
+           }else{
+               alert('Semua Form Harus Diisi')
+           }
 
-        // var title = this.refs.title.value
-        // var sutradara = this.refs.sutradara.value
-        // var genre = this.refs.genre.value
-        // var imageLink = this.refs.imageLink.value
-        // var playingAt = this.refs.playingAt.value
-        // var duration = this.refs.duration.value
-        // var sinopsis = this.refs.sinopsis.value
-
-        // var data = {
-        //     title : title,
-        //     genre : genre,
-        //     sinopsis : sinopsis,
-        //     playingAt : playingAt.toString().split(' ')
-        // }
-
-        // Axios.post('http://localhost:2000/movies' , )
-        // Ambil Data Dari Input
-
-        // Kirim Ke API
+    
     }
     //render
     render(){
