@@ -9,7 +9,11 @@ import Axios from 'axios';
 
 class ManageMovie extends React.Component{
     //state
-    state = {data : [] , modalOpen : false}
+    state = { 
+              data : [] ,
+              modalOpen : false , 
+              selectedEdit : 0
+            }
 
     //lifecycle
     componentDidMount(){
@@ -33,8 +37,81 @@ class ManageMovie extends React.Component{
         return newArr.join(' ')
     }
 
+    onBtnDeleteClick = (id,index) => {
+        var konfirm = window.confirm('Are You Sure Want To Delete this Data?')
+        if(konfirm === true){
+            Axios.delete('http://localhost:2000/movies/' + id)
+            .then((res) => {
+                alert('Delete Data Success')
+                var data = this.state.data
+                data.splice(index , 1)
+                this.setState({data : data})
+            })
+            .catch((err) => {
+
+            })
+        }
+    }
+    onBtnEditClick = (id) => {
+        this.setState({selectedEdit : id})
+    }
+
+    onBtnSaveEditClick = () => {
+        var title = this.refs.input1.value
+        var sutradara = this.refs.input2.value
+        var image = this.refs.input3.value
+        var genre = this.refs.input4.value
+        var playingAt = this.refs.input5.value.split(',')
+        var duration = this.refs.input6.value
+        var sinopsis = this.refs.input7.value
+
+        if(title === '' || 
+           sutradara === '' || 
+           image === '' || 
+           genre === '' || 
+           playingAt.length <= 0 ||
+           duration <= 0 ||
+           sinopsis ==='')
+           {
+               alert('Isi Form Dengan Benar')
+           }
+        else{
+            var data = {
+                title, sutradara,image,genre,playingAt,duration,sinopsis
+            }
+            Axios.put('http://localhost:2000/movies/' +this.state.selectedEdit ,data )
+            .then((res)=>{
+                console.log(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        } 
+        
+        
+        // Get Semua Data Dari Input
+        // Kirim Ke JSON
+
+    }
+
     renderDataToJsx = () => {
-        var jsx = this.state.data.map((val) => {
+        var jsx = this.state.data.map((val , index) => {
+            if(val.id === this.state.selectedEdit){
+                return(
+                    <TableRow>
+                        <TableCell>{val.id}</TableCell>
+                        <TableCell><input ref='input1' className='form-control' type='text' defaultValue={val.title} /></TableCell>
+                        <TableCell><input ref='input2' className='form-control' type='text' defaultValue={val.sutradara} /> </TableCell>
+                        <TableCell><input ref='input3' className='form-control' type='text' defaultValue={val.image}/> </TableCell>
+                        <TableCell><input ref='input4' className='form-control' type='text' defaultValue={val.genre} /></TableCell>
+                        <TableCell><input ref='input5' className='form-control' type='text' defaultValue={val.playingAt} /></TableCell>
+                        <TableCell><input ref='input6' className='form-control' type='text' defaultValue={val.duration} /></TableCell>
+                        <TableCell><textarea ref='input7' className='form-control' defaultValue={val.sinopsis} /></TableCell>
+                        <TableCell> <input type='button' className='btn btn-danger' value='cancel' onClick={() => this.setState({selectedEdit : 0})} /> </TableCell>
+                        <TableCell> <input type='button' className='btn btn-success' value='save' onClick={this.onBtnSaveEditClick} /> </TableCell>
+                    </TableRow>
+                )
+            }
             return(
                 <TableRow>
                     <TableCell>{val.id}</TableCell>
@@ -45,8 +122,8 @@ class ManageMovie extends React.Component{
                     <TableCell>{val.playingAt.join(',')}</TableCell>
                     <TableCell>{val.duration}</TableCell>
                     <TableCell>{this.RenderSinopsis(val.sinopsis) + '....'}</TableCell>
-                    <TableCell> <EditAttributesRounded /> </TableCell>
-                    <TableCell> <DeleteForeverRounded /> </TableCell>
+                    <TableCell> <EditAttributesRounded onClick={() => this.onBtnEditClick(val.id)} /> </TableCell>
+                    <TableCell> <DeleteForeverRounded  onClick={() => this.onBtnDeleteClick(val.id , index)} /> </TableCell>
                 </TableRow>
             )
         })
@@ -61,57 +138,71 @@ class ManageMovie extends React.Component{
     }
 
     onBtnSaveClick = () => {
+        // var playingAt = []
+
+        // if(this.refs.radio1.refs.radio1Inner.checked === true){
+        //     playingAt.push(9)
+        // }
+        // if(this.refs.radio2.refs.radio2Inner.checked === true){
+        //     playingAt.push(14)
+        // }
+        // if(this.refs.radio3.refs.radio3Inner.checked === true){
+        //     playingAt.push(16)
+        // }
+        // if(this.refs.radio4.refs.radio4Inner.checked === true){
+        //     playingAt.push(20)
+        // }
+        // if(this.refs.radio5.refs.radio5Inner.checked === true){
+        //     playingAt.push(22)
+        // }
+
+        var jam = [9,14,16,20,22]
         var playingAt = []
+        for(var i = 1 ; i <= 5 ; i++){
+            if(this.refs['radio' + i].refs['radio' + i + 'Inner'].checked === true){
+                playingAt.push(jam[i-1])
+            }
+        }
+        console.log(playingAt)
+        
+        
+            var title = this.refs.title.value
+            var sutradara = this.refs.sutradara.value
+            var genre = this.refs.genre.value
+            var imageLink = this.refs.imageLink.value
+            var duration = this.refs.duration.value
+            var sinopsis = this.refs.sinopsis.value
 
-        if(this.refs.radio1.refs.radio1Inner.checked === true){
-            playingAt.push(9)
-        }
-        if(this.refs.radio2.refs.radio2Inner.checked === true){
-            playingAt.push(14)
-        }
-        if(this.refs.radio3.refs.radio3Inner.checked === true){
-            playingAt.push(16)
-        }
-        if(this.refs.radio4.refs.radio4Inner.checked === true){
-            playingAt.push(20)
-        }
-        if(this.refs.radio5.refs.radio5Inner.checked === true){
-            playingAt.push(22)
-        }
-       
-        var title = this.refs.title.value
-        var sutradara = this.refs.sutradara.value
-        var genre = this.refs.genre.value
-        var imageLink = this.refs.imageLink.value
-        var duration = this.refs.duration.value
-        var sinopsis = this.refs.sinopsis.value
-
-        var data = {
-            title : title,
-            genre : genre,
-            sinopsis : sinopsis,
-            playingAt,
-            duration,
-            sutradara,
-            image : imageLink
-        }
-        if(title !== '' &&
-           sutradara !== '' &&
-           playingAt.length > 0 &&
-           genre !== '' && 
-           imageLink !== '' && 
-           duration > 0 && 
-           sinopsis !== '' ){
-               Axios.post('http://localhost:2000/movies' , data )
-               .then((res) => {
-                   console.log(res.data)
-               })
-               .catch((err) => {
-                   console.log(err)
-               })
-           }else{
-               alert('Semua Form Harus Diisi')
-           }
+            var data = {
+                title : title,
+                genre : genre,
+                sinopsis : sinopsis,
+                playingAt,
+                duration,
+                sutradara,
+                image : imageLink
+            }
+            if(title !== '' &&
+               sutradara !== '' &&
+               playingAt.length > 0 &&
+               genre !== '' && 
+               imageLink !== '' && 
+               duration > 0 && 
+               sinopsis !== '' )
+               {
+                   Axios.post('http://localhost:2000/movies' , data )
+                   .then((res) => {
+                       alert('Add Data Success')
+                       var movieData = this.state.data
+                       movieData.push(res.data)
+                       this.setState({data : movieData , modalOpen : false}) 
+                   })
+                   .catch((err) => {
+                       console.log(err)
+                   })
+               }else{
+                   alert('Semua Form Harus Diisi')
+               }
 
     
     }
