@@ -3,10 +3,12 @@ import Header from './components/header'
 import MovieList from './pages/movieList'
 import Bebas from './pages/admin/manageMovie'
 import MovieDetail from './pages/movieDetail'
+import Register from './pages/register'
 
 import { Route } from 'react-router-dom'
 
 import './App.css';
+import Login from './pages/login';
 
 class App extends React.Component {
 
@@ -17,6 +19,8 @@ class App extends React.Component {
         <Route exact path='/' component= {MovieList} />
         <Route path='/manage' component={Bebas} />
         <Route path='/movie-detail' component={MovieDetail} />
+        <Route path='/register' component={Register} />
+        <Route path='/login' component={Login} />
       </div>
     );
   }

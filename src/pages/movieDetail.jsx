@@ -1,11 +1,13 @@
 import React from 'react'
 import Axios from 'axios';
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
     // Dari Movie List kirim Id Ke Movie Detail
     // Di Movie Detail kita get movie berdasarkan ID
     // Dapet Data, kemudian taruh di state
     // Lalu State di render
 class MovieDetail extends React.Component{
-    state = { data : null }
+    state = { data : null , login : null }
     componentDidMount(){
         var id = this.props.location.search.split('=')[1]
         Axios.get('http://localhost:2000/movies/' + id)
@@ -16,7 +18,18 @@ class MovieDetail extends React.Component{
             console.log(err)
         })
     }
+
+    onBuyTicketClick = () => {
+        if(this.props.user.id === 0){
+            this.setState({login : false})
+        }
+    }
     render(){
+        if(this.state.login === false){
+            return(
+                <Redirect to='/login' />
+            )
+        }
         if(this.state.data === null){
             return (<p> Loading ... </p>)
         }
@@ -33,7 +46,7 @@ class MovieDetail extends React.Component{
                         <p>{this.state.data.duration} Minutes </p> 
                         <p> Playing At : {this.state.data.playingAt.join(',')} </p> 
                         <p style={{fontStyle:'italic'}}> {this.state.data.sinopsis} </p> 
-                        <input type='button' className='btn btn-outline-success' value='Buy Ticket' />
+                        <input onClick={this.onBuyTicketClick} type='button' className='btn btn-outline-success' value='Buy Ticket' />
                     </div>
                 </div>    
             </div>
@@ -41,4 +54,10 @@ class MovieDetail extends React.Component{
     }
 }
 
-export default MovieDetail
+const mapStateToProps = (state) => {
+    return{
+        user : state.user
+    }
+}
+
+export default connect(mapStateToProps)(MovieDetail)
