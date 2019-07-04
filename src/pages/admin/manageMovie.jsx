@@ -117,7 +117,7 @@ class ManageMovie extends React.Component{
                     <TableCell>{val.id}</TableCell>
                     <TableCell>{val.title}</TableCell>
                     <TableCell>{val.sutradara}</TableCell>
-                    <TableCell> <img src={val.image} height='50px' /> </TableCell>
+                    <TableCell> <img src={val.image} height='50px' alt='movie' /> </TableCell>
                     <TableCell>{val.genre}</TableCell>
                     <TableCell>{val.playingAt.join(',')}</TableCell>
                     <TableCell>{val.duration}</TableCell>
