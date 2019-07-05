@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {Paper} from '@material-ui/core'
 import { Link } from 'react-router-dom'
+import Axios from 'axios';
 
 // Ambil Input Value
 // klik register
@@ -17,8 +18,23 @@ class Register extends Component {
         var username = this.refs.username.value
         var password = this.refs.password.value
         var confirm = this.refs.confirm.value
-        if(confirm !== password){
-            this.setState({error : 'Password and confirm password must be same'})
+        if(username === '' || password === "" || confirm === ''){
+            this.setState({error : 'Semua Form Harus diisi'})
+        }else{
+            if(confirm !== password){
+                this.setState({error : 'Password and confirm password must be same'})
+            }else{
+                // Ngecek Username udah ada atau belum
+                Axios.get('http://localhost:2000/users?username=' + username)
+                .then((res) => {
+                    if(res.data.length > 0){
+                        this.setState({error : 'Username has been taken'})
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            }
         }
     }
 
