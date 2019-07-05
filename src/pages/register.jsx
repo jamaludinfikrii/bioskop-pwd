@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {Paper} from '@material-ui/core'
 import { Link } from 'react-router-dom'
+import Loader from 'react-loader-spinner'
 import Axios from 'axios';
 
 // Ambil Input Value
@@ -12,9 +13,11 @@ import Axios from 'axios';
 
 class Register extends Component {
     state = {
-        error : ''
+        error : '',
+        loading : false
     }
     onBtnClickRegister = () => {
+        
         var username = this.refs.username.value
         var password = this.refs.password.value
         var confirm = this.refs.confirm.value
@@ -24,11 +27,22 @@ class Register extends Component {
             if(confirm !== password){
                 this.setState({error : 'Password and confirm password must be same'})
             }else{
+                this.setState({loading : true})
                 // Ngecek Username udah ada atau belum
                 Axios.get('http://localhost:2000/users?username=' + username)
                 .then((res) => {
                     if(res.data.length > 0){
-                        this.setState({error : 'Username has been taken'})
+                        this.setState({error : 'Username has been taken' ,loading : false})
+                    }else{
+                        var obj = {username : username , password : password}
+                        Axios.post('http://localhost:2000/users' , obj)
+                        .then((res) => {
+                            console.log("Masuk ke then")
+                            console.log(res.data)
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
                     }
                 })
                 .catch((err) => {
@@ -64,7 +78,15 @@ class Register extends Component {
                         this.state.error === '' ? null :
                         <div className='alert alert-danger mt-3'>{this.state.error}</div>
                     }
-                    <input type='button' onClick={this.onBtnClickRegister} className='btn btn-primary mt-3' value='Register Now' />
+                    {
+                        this.state.loading === true 
+                        ? 
+                        <Loader type='ThreeDots' color ='black' width = '40px' />
+                        :
+                        <input type='button' onClick={this.onBtnClickRegister} className='btn btn-primary mt-3' value='Register Now' />
+                    }
+                   
+                    
                     </Paper>
                     <p className='mt-3' style={{fontStyle:'italic'}}>
                         Sudah Punya Akun ? 

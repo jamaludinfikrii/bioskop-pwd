@@ -1,9 +1,9 @@
-var obj = {
-    nama : {
-        depan : 'Purwadhika',
-        belakang : 'Startup'
-    },
-    umur : 100
-}
+var nama = 'fikri'
+var kantor = 'purwadhika'
 
-console.log(obj['nama'].belakang) 
+
+var obj = {
+    nama : nama,
+    kantor : kantor
+}
+console.log(obj)
