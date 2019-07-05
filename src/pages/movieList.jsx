@@ -1,6 +1,7 @@
 import React from 'react'
 import Axios from 'axios'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 
 class MovieList extends React.Component{
@@ -45,7 +46,12 @@ class MovieList extends React.Component{
     render(){
         console.log(this.state.data)
         return(
-            <div className='container mt-5'>   
+            <div className='container mt-5'>
+                { this.props.username !== ""?
+                <div className='alert alert-success'>
+                    Hello , Welocome Back, {this.props.username}
+                </div>: null
+                }   
                 <div className='row justify-content-center'>
 
                 {this.renderMovieJsx()}
@@ -57,5 +63,10 @@ class MovieList extends React.Component{
         )
     }
 }
+const mapStateToProps = (state) => {
+    return{
+        username : state.user.username
+    }
+}
 
-export default MovieList;
+export default connect(mapStateToProps)(MovieList);

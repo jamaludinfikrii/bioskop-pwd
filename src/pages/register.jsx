@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import {Paper} from '@material-ui/core'
 import { Link } from 'react-router-dom'
+import {OnRegisterSuccess} from './../redux/actions'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import Loader from 'react-loader-spinner'
 import Axios from 'axios';
 
@@ -37,8 +40,8 @@ class Register extends Component {
                         var obj = {username : username , password : password}
                         Axios.post('http://localhost:2000/users' , obj)
                         .then((res) => {
-                            console.log("Masuk ke then")
                             console.log(res.data)
+                            this.props.OnRegisterSuccess(res.data)
                         })
                         .catch((err) => {
                             console.log(err)
@@ -61,6 +64,9 @@ class Register extends Component {
     //     }
     // }
     render() {
+        if(this.props.user.username !== ''){
+            return <Redirect to='/' />
+        }
         // BIKIN VARIABEL
         // const error = this.state.error === '' ? null : <div className='alert alert-danger mt-3'>{this.state.error}</div>
         return (
@@ -75,8 +81,14 @@ class Register extends Component {
                     {
                         // error
                         // this.renderErrorMessege()
-                        this.state.error === '' ? null :
-                        <div className='alert alert-danger mt-3'>{this.state.error}</div>
+                        this.state.error === '' 
+                        ?
+                        null 
+                        :
+                        <div className='alert alert-danger mt-3'>
+                            {this.state.error} 
+                            <span onClick={() =>this.setState({error : ''})} style={{fontWeight:"bolder" , cursor : 'pointer',float : 'right'}}> x </span> 
+                        </div>
                     }
                     {
                         this.state.loading === true 
@@ -102,5 +114,10 @@ class Register extends Component {
         )
     }
 }
+const mapStateToProps = (state) => {
+    return{
+        user : state.user
+    }
+}
 
-export default Register
+export default connect(mapStateToProps,{OnRegisterSuccess})(Register)
