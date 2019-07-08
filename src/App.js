@@ -4,6 +4,7 @@ import MovieList from './pages/movieList'
 import Bebas from './pages/admin/manageMovie'
 import MovieDetail from './pages/movieDetail'
 import Register from './pages/register'
+import SeatRes from './pages/seatReservation'
 
 import { Route } from 'react-router-dom'
 
@@ -36,6 +37,7 @@ class App extends React.Component {
         <Route path='/movie-detail' component={MovieDetail} />
         <Route path='/register' component={Register} />
         <Route path='/login' component={Login} />
+        <Route path='/order-seat' component={SeatRes} />
       </div>
     );
   }
