@@ -26,6 +26,7 @@ class MovieList extends React.Component{
     // Di Movie Detail kita get movie berdasarkan ID
     // Dapet Data, kemudian taruh di state
     // Lalu State di render
+    
     renderMovieJsx = () => {
         var jsx = this.state.data.map((val) => {
             return(

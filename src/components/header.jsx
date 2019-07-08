@@ -11,9 +11,11 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem } from 'reactstrap';
-// import { Link } from 'react-router-dom'
+import {connect} from 'react-redux'
+import {onLogout} from './../redux/actions'
+import { Link } from 'react-router-dom'
 
-export default class Example extends React.Component {
+class Example extends React.Component {
   state = {
       isOpen : false
   }
@@ -22,6 +24,10 @@ export default class Example extends React.Component {
     this.setState({
       isOpen: !this.state.isOpen
     });
+  }
+  onBtnLogoutClick = () => {
+    this.props.onLogout()
+    localStorage.removeItem('terserah')
   }
   render() {
     return (
@@ -32,14 +38,15 @@ export default class Example extends React.Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="/components/">Components</NavLink>
+               <Link to='/register'> <NavLink>JOIN NOW</NavLink></Link>
               </NavItem>
-              <NavItem>
-                <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
-              </NavItem>
+              
+              {
+              this.props.name !== ""
+              ?
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
-                  Options
+                  {this.props.name}
                 </DropdownToggle>
                 <DropdownMenu right>
                   <DropdownItem>
@@ -49,11 +56,14 @@ export default class Example extends React.Component {
                     Option 2
                   </DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem>
-                    Reset
+                  <DropdownItem onClick={this.onBtnLogoutClick}>
+                    Logout
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
+              :
+              null
+            }
             </Nav>
           </Collapse>
         </Navbar>
@@ -61,3 +71,11 @@ export default class Example extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    name : state.user.username
+  }
+}
+
+export default connect(mapStateToProps , {onLogout})(Example)

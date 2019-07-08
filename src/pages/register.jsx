@@ -42,6 +42,7 @@ class Register extends Component {
                         .then((res) => {
                             console.log(res.data)
                             this.props.OnRegisterSuccess(res.data)
+                            localStorage.setItem('terserah' ,res.data.username)
                         })
                         .catch((err) => {
                             console.log(err)

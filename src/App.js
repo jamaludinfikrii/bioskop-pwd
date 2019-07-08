@@ -9,8 +9,23 @@ import { Route } from 'react-router-dom'
 
 import './App.css';
 import Login from './pages/login';
+import Axios from 'axios';
+import { ApiUrl } from './supports/ApiURl'
+import {OnRegisterSuccess} from './redux/actions'
+import {connect} from 'react-redux'
+
 
 class App extends React.Component {
+  componentDidMount(){
+    var username = localStorage.getItem('terserah')
+    if(username !== null){
+      Axios.get(ApiUrl + '/users?username=' + username)
+      .then((res) => {
+        console.log(res.data)
+        this.props.OnRegisterSuccess(res.data[0])
+      })
+    }
+  }
 
   render(){
     return (
@@ -26,4 +41,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default connect(null ,{OnRegisterSuccess} )(App);
