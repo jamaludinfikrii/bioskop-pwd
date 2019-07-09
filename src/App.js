@@ -29,6 +29,10 @@ class App extends React.Component {
   }
 
   render(){
+    if(this.props.user === '' && localStorage.getItem('terserah') !== null){
+      return (<p> Loading ...  </p>)
+    }
+    // alert('Ini App.js')
     return (
       <div>
         <Header/>
@@ -42,5 +46,10 @@ class App extends React.Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return{
+    user : state.user.username
+  }
+}
 
-export default connect(null ,{OnRegisterSuccess} )(App);
+export default connect(mapStateToProps ,{OnRegisterSuccess} )(App);
