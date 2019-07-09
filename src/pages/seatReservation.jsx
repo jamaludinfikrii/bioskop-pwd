@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Numeral from 'numeral'
 
 class SeatRes extends Component {
     state ={
@@ -11,6 +12,17 @@ class SeatRes extends Component {
         var chosen = this.state.chosen
         chosen.push(arr)
         this.setState({chosen :chosen })
+    }
+    onCancelSeatClick =(arr) => {
+        var chosen = this.state.chosen
+        // var index = chosen.indexOf(arr)
+        // chosen.splice(index , 1)
+        // this.setState({chosen : chosen})
+        // console.log(chosen)
+        var hasil = chosen.filter((val)=>{
+           return val.join('') !== arr.join('')
+        })
+        this.setState({chosen: hasil})
     }
 
     renderSeat = () => {
@@ -50,10 +62,10 @@ class SeatRes extends Component {
                                 return(
                                     <input 
                                     type='button' 
-                                    style={{width:'40px' , height:'40px' , color : 'white',textAlign:'center'}} 
-                                    disabled 
+                                    style={{width:'40px' , height:'40px' , color : 'white',textAlign:'center'}}  
                                     value={i+1 + alpha[index]} 
-                                    className='mr-2 mt-2 bg-success'  />
+                                    className='mr-2 mt-2 bg-success'
+                                    onClick={()=> this.onCancelSeatClick([index,i])}  />
                                 )
                             }
                             return(
@@ -77,9 +89,29 @@ class SeatRes extends Component {
         return (
             <div className='container mt-5 mb-5'>
                 <h1>Order Seat Here</h1>
-                <table>
-                  {this.renderSeat()}
-                </table>
+                <div className='row justify-content-center'>
+                    <table>
+                    {this.renderSeat()}
+                    </table>  
+                    <div className='mt-5' style={{backgroundColor:'white'
+                                 , width:'100%' 
+                                 , height:'30px'
+                                 , border:'0.5px solid grey'
+                                 ,textAlign:'center',
+                                 fontWeight:'bolder'}}>
+                        LAYAR BIOSKOP
+                    </div>  
+                </div>
+                {
+                    this.state.chosen.length ===0 
+                    ?
+                    null
+                    :
+                    <div className='mt-5'>
+                    Total Rp. {Numeral(this.state.chosen.length * 35000).format(0,0) }
+                    </div>
+                }
+
             </div>
         )
     }
