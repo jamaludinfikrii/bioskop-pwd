@@ -7,7 +7,7 @@ import Register from './pages/register'
 import SeatRes from './pages/seatReservation'
 import PageNotFound from './pages/PageNotFound'
 
-import { Route } from 'react-router-dom'
+import { Route ,Switch } from 'react-router-dom'
 
 import './App.css';
 import Login from './pages/login';
@@ -37,13 +37,15 @@ class App extends React.Component {
     return (
       <div>
         <Header/>
-        <Route exact path='/' component= {MovieList} />
-        <Route path='/manage' component={Bebas} />
-        <Route path='/movie-detail' component={MovieDetail} />
-        <Route path='/register' component={Register} />
-        <Route path='/login' component={Login} />
-        <Route path='/order-seat' component={SeatRes} />
-        <Route path='/notfound' component={PageNotFound} />
+        <Switch>
+          <Route exact path='/' component= {MovieList} />
+          <Route path='/manage' component={Bebas} />
+          <Route path='/movie-detail' component={MovieDetail} />
+          <Route path='/register' component={Register} />
+          <Route path='/login' component={Login} />
+          <Route path='/order-seat' component={SeatRes} />
+          <Route path='*' component={PageNotFound} />
+        </Switch>
       </div>
     );
   }
