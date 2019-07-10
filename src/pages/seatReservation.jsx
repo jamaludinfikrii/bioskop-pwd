@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import Numeral from 'numeral'
 import PageNotFound from './../pages/PageNotFound'
+import Axios from 'axios';
+import { ApiUrl } from '../supports/ApiURl';
+import { connect } from 'react-redux'
 
 class SeatRes extends Component {
     state ={
@@ -85,6 +88,35 @@ class SeatRes extends Component {
         return jsx
 
     }
+    onBuyClick = () => {
+        var transaction = this.props.transaction
+        // post ke movie
+        if(this.state.chosen.length !== 0){
+            var booked = this.props.location.state.booked
+            var arr = [...booked , ...this.state.chosen]
+            Axios.patch(ApiUrl + '/movies/' + this.props.location.state.id,{
+                booked : arr
+            })
+            .then((res) => {
+                console.log(res.data)
+                var obj = {
+                    title : this.props.location.state.title,
+                    qty : this.state.chosen.length,
+                    total : this.state.chosen.length * 35000
+                }
+                transaction.push(obj)
+                Axios.patch(ApiUrl + '/users/' + this.props.id,{
+                    transaction : transaction
+                } ).then((res) => {
+                    alert('masuk')
+                })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
+        // lalu post ke users
+    }
     render() {
         console.log(this.props.location.state)
         if(this.props.location.state === undefined){
@@ -117,13 +149,22 @@ class SeatRes extends Component {
                     Total Rp. {Numeral(this.state.chosen.length * 35000).format(0,0) }
                     </div>
                 }
+                <div className='mt-3'>
+                    <input type="button" onClick={this.onBuyClick} className='btn btn-primary' value='Buy'/>
+                </div>
 
             </div>
         )
     }
 }
+const mapStateToProps = (state) => {
+    return{
+        id : state.user.id,
+        transaction : state.user.transaction
+    }
+}
 
-export default SeatRes
+export default connect(mapStateToProps)(SeatRes)
 
 
 
