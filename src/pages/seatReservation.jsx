@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import Numeral from 'numeral'
+import PageNotFound from './../pages/PageNotFound'
 
 class SeatRes extends Component {
     state ={
-        seats : 100 , 
-        baris : 5 , 
-        booked : [[2,4],[3,5],[1,2],[1,3]], 
         chosen : [] 
     }
+    
     onSeatClick = (arr) => {
         var chosen = this.state.chosen
         chosen.push(arr)
@@ -26,18 +25,19 @@ class SeatRes extends Component {
     }
 
     renderSeat = () => {
+        var {seats,booked} = this.props.location.state
         var arr = []
         // console.log(arr)
 
-        for(var i = 0 ; i< this.state.baris ; i++){
+        for(var i = 0 ; i< seats/20 ; i++){
             arr.push([])
-            for(var j = 0 ; j < this.state.seats/this.state.baris; j++){
+            for(var j = 0 ; j < seats/ (seats/20); j++){
                 arr[i].push(1)
             }
         }
         
-        for(var i = 0 ; i< this.state.booked.length; i++){
-            arr[this.state.booked[i][0]][this.state.booked[i][1]] = 2
+        for(var i = 0 ; i< booked.length; i++){
+            arr[booked[i][0]][booked[i][1]] = 2
         }
         for(var i = 0 ; i< this.state.chosen.length; i++){
             arr[this.state.chosen[i][0]][this.state.chosen[i][1]] = 3
@@ -86,9 +86,15 @@ class SeatRes extends Component {
 
     }
     render() {
+        console.log(this.props.location.state)
+        if(this.props.location.state === undefined){
+            return(
+                <PageNotFound />
+            )
+        }
         return (
             <div className='container mt-5 mb-5'>
-                <h1>Order Seat Here</h1>
+                <h1>{this.props.location.state.title}</h1>
                 <div className='row justify-content-center'>
                     <table>
                     {this.renderSeat()}
