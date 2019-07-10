@@ -5,6 +5,7 @@ import Bebas from './pages/admin/manageMovie'
 import MovieDetail from './pages/movieDetail'
 import Register from './pages/register'
 import SeatRes from './pages/seatReservation'
+import PageNotFound from './pages/PageNotFound'
 
 import { Route } from 'react-router-dom'
 
@@ -42,6 +43,7 @@ class App extends React.Component {
         <Route path='/register' component={Register} />
         <Route path='/login' component={Login} />
         <Route path='/order-seat' component={SeatRes} />
+        <Route path='/notfound' component={PageNotFound} />
       </div>
     );
   }
