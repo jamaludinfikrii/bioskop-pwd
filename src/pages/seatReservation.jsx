@@ -7,7 +7,19 @@ import { connect } from 'react-redux'
 
 class SeatRes extends Component {
     state ={
-        chosen : [] 
+        chosen : [] ,
+        booked : []
+    }
+    componentDidMount(){
+
+        Axios.get(ApiUrl + '/movies/' + this.props.location.state.id)
+        .then((res) => {
+            this.setState({booked : res.data.booked})
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+        
     }
     
     onSeatClick = (arr) => {
@@ -39,8 +51,8 @@ class SeatRes extends Component {
             }
         }
         
-        for(var i = 0 ; i< booked.length; i++){
-            arr[booked[i][0]][booked[i][1]] = 2
+        for(var i = 0 ; i< this.state.booked.length; i++){
+            arr[this.state.booked[i][0]][this.state.booked[i][1]] = 2
         }
         for(var i = 0 ; i< this.state.chosen.length; i++){
             arr[this.state.chosen[i][0]][this.state.chosen[i][1]] = 3
@@ -109,6 +121,10 @@ class SeatRes extends Component {
                     transaction : transaction
                 } ).then((res) => {
                     alert('masuk')
+                    
+                    this.setState({booked : [...this.state.booked , ...this.state.chosen],
+                                    chosen : []
+                    })
                 })
             })
             .catch((err) => {
@@ -150,7 +166,7 @@ class SeatRes extends Component {
                     </div>
                 }
                 <div className='mt-3'>
-                    <input type="button" onClick={this.onBuyClick} className='btn btn-primary' value='Buy'/>
+                    <input type="button" onClick={this.onBuyClick} className='btn btn-primary' value='Add To Cart'/>
                 </div>
 
             </div>
